@@ -1,0 +1,6 @@
+include employee/schema.sql
+graft employee/static
+graft employee/templates
+graft employee/model
+graft employee/views
+global-exclude *.pyc

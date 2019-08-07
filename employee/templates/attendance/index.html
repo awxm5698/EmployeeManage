@@ -1,0 +1,80 @@
+{% extends 'base_attend.html' %}
+
+{% block header %}
+<h1>{% block title %}Attendance{% endblock %}</h1>
+{% if g.user %}
+<a class="action" href="{{ url_for('attendance.create_application') }}">New Application</a>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div>
+    <table id="user" border="1">
+        <tr>
+            <th>No.</th>
+            <th>Application Type</th>
+            <th>Applicant Name</th>
+            <th>Begin Date</th>
+            <th>End Date</th>
+            <th>Duration(hour)</th>
+            <th>Reason</th>
+            <th>Auditor Status</th>
+            <th>Auditor Name</th>
+            <th>Auditor Reason</th>
+            <th>Auditor Time</th>
+            <th>Create Time</th>
+            <th>Edit</th>
+        </tr>
+        {% for attend in attendance %}
+        <tr>
+            <td>{{ attend['application_nbr'] }}</td>
+            <td>{{ attend['type_desc'] }}</td>
+            <td>{{ attend['applicant_name'] }}</td>
+            <td>{{ attend['begin_date'] }}</td>
+            <td>{{ attend['end_date'] }}</td>
+            <td>{{ attend['duration_time'] }}</td>
+            <td>{{ attend['application_reason'] }}</td>
+            <td>{{ attend['status_desc'] }}</td>
+            <td>{{ attend['application_name'] }}</td>
+            {% if attend['auditor_reason']==None %}
+            <td></td>
+            {% else %}
+            <td>{{ attend['auditor_reason'] }}</td>
+            {% endif %}
+            {% if attend['auditor_time']==None %}
+            <td></td>
+            {% else %}
+            <td>{{ attend['auditor_time'] }}</td>
+            {% endif %}
+            <td>{{ attend['create_time'] }}</td>
+            <td>
+                {% if attend['auditor_status']==1 and g.user['id']==attend['applicant_id']%}
+                <form  action="{{ url_for('attendance.recall_application', application_id=attend['id']) }}" method="post">
+                <input class="danger" type="submit" value="Recall" onclick="return confirm('Are you sure recall the application?');">
+                </form>
+                {% endif %}
+                {% if (attend['auditor_status']==1 and g.user['id']==attend['auditor_id'])
+                    or (g.user['job_id']==0 and attend['auditor_status']==1) %}
+                <form  action="{{ url_for('attendance.auditor_application', application_id=attend['id'], status=2)}}" method="post">
+                    <input class="pass" type="submit" value="Pass" onclick="return confirm('Are you sure pass the application?');">
+                </form>
+                <form  action="{{ url_for('attendance.auditor_application', application_id=attend['id'], status=3) }}" method="post">
+                    <input class="danger" type="submit" value="Reject" onclick="return confirm('Are you sure reject the application?');">
+                </form>
+                {% endif %}
+                {% if  g.user['job_id']==0 %}
+                <form  action="{{ url_for('attendance.delete_application', application_id=attend['id']) }}" method="post">
+                    <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure delete the application?');">
+                </form>
+                {% endif %}
+            </td>
+        </tr>
+        {% if not loop.last %}
+        {% endif %}
+        {% endfor %}
+    </table>
+</div>
+
+<hr>
+<a href="{{ url_for('blog.index') }}">Back</a>
+{% endblock %}

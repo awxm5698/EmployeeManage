@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>{% block title %}Edit Job {% endblock %}</h1>
+
+<a href="{{ url_for('user_center.job') }}" onclick="return confirm('Are you sure?');">Back</a>
+
+{% endblock %}
+
+{% block content %}
+<form action="{{ url_for('user_center.update_job', job_id=post['id']) }}" method="post">
+    <label for="name">Job Name</label>
+    <input name="name" id="name"
+           value="{{ request.form['name'] or post['job_name'] }}" required>
+    <label for="superior_id">Superior Name</label>
+    <select name="superior_id" id="superior_id">
+        <option value="{{ request.form['superior_id'] or post['superior_id'] }}">
+            {{ request.form['superior_name'] or post['superior_name'] }}</option>
+        {% for job in jobs %}
+        <option value="{{ job.id }}">{{job.job_name}}</option>
+        {% endfor %}
+    </select>
+    <label for="desc">{{name}} Description</label>
+    <textarea name="desc" id="desc">{{ request.form['desc'] or post['job_desc'] }}</textarea>
+    <input type="submit" value="Save">
+</form>
+<hr>
+<form action="{{ url_for('user_center.delete_job', job_id=post['id']) }}" method="post">
+    <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
+</form>
+
+{% endblock %}

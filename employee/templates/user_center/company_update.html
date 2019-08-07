@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>{% block title %}Edit {{name}} {% endblock %}</h1>
+
+<a href="{{ url_for('user_center.company') }}" onclick="return confirm('Are you sure?');">Back</a>
+
+{% endblock %}
+
+{% block content %}
+<form action="{{ url_for('user_center.update_company', company_id=company['id']) }}" method="post">
+    <label for="name">Company Name</label>
+    <input name="name" id="name"
+           value="{{ request.form['name'] or company['company_name'] }}" required>
+    <label for="desc">{{name}} Description</label>
+    <textarea name="desc" id="desc">{{ request.form['desc'] or company['company_desc'] }}</textarea>
+    <input type="submit" value="Save">
+</form>
+<hr>
+<form action="{{ url_for('user_center.delete_company', company_id=company['id']) }}" method="post">
+    <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
+</form>
+
+{% endblock %}

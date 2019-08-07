@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>{% block title %}Job Manage{% endblock %}</h1>
+{% if g.user %}
+<a class="action" href="{{ url_for('user_center.create_job') }}">New Job</a>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+
+<div>
+    <table id="job" border="1">
+        <tr>
+            <th>ID</th>
+            <th>Job Name</th>
+            <th>Superior Name</th>
+            <th>Description</th>
+            <th>Edit</th>
+        </tr>
+        {% for job in jobs %}
+        <tr>
+            <td>{{ job['id'] }}</td>
+            <td>{{ job['job_name'] }}</td>
+            <td>{{ job['superior_name'] }}</td>
+            <td>{{ job['job_desc'] }}</td>
+            <td><a class="action" href="{{ url_for('user_center.update_job', job_id=job['id']) }}">Edit</a></td>
+        </tr>
+        {% if not loop.last %}
+        {% endif %}
+        {% endfor %}
+    </table>
+</div>
+<hr>
+<a href="{{ url_for('user_center.index') }}">Back</a>
+{% endblock %}

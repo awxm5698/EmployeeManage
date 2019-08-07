@@ -1,0 +1,91 @@
+{% extends 'base_attend.html' %}
+
+{% block header %}
+<h1>{% block title %}New Application{% endblock %}</h1>
+
+<a href="{{ url_for('attendance.index') }}" onclick="return confirm('Are you sure?');">Back</a>
+
+{% endblock %}
+
+{% block content %}
+<form method="post">
+    <table>
+        <tr>
+            <td>
+                <label for="applicant_id">Applicant Name</label>
+            </td>
+            <td>
+                <input name="applicant_id" id="applicant_id" type="text" readonly
+                       value="{{ g.user['really_name'] }}">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="application_type">Application Type</label>
+            </td>
+            <td>
+                <select name="application_type" id="application_type">
+                    {% for ty in types %}
+                    <option value="{{ ty.type_id }}">{{ty.type_desc}}</option>
+                    {% endfor %}
+                </select>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="begin_date">Begin Date</label>
+            </td>
+            <td>
+                <input name="begin_date" id="begin_date"
+                       value="{{ request.form['begin_date'] or default_date['begin_date']}}" required><i>eg:2019-08-06 14:00:00</i>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="end_date">End Date</label>
+            </td>
+            <td>
+                <input name="end_date" id="end_date"
+                       value="{{ request.form['end_date'] or default_date['end_date'] }}" required><i>eg:2019-08-06 18:00:00</i>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="duration_time">Duration Time</label>
+            </td>
+            <td>
+                <input name="duration_time" id="duration_time"
+                       value="{{ request.form['duration_time'] or default_date['duration_time'] }}" required><i>unit:hour</i>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="application_reason">Application Reason</label>
+            </td>
+            <td>
+                <input name="application_reason" id="application_reason"
+                       value="{{ request.form['application_reason'] or 'other' }}" required><i>eg: yearly vacation, overtime compensation, sick leave and other</i>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="auditor_id">Auditor</label>
+            </td>
+            <td>
+                <select name="auditor_id" id="auditor_id">
+                    {% for aud in auditor %}
+                    <option value="{{ aud.id }}">{{aud.really_name}}</option>
+                    {% endfor %}
+                </select>
+
+            </td>
+        </tr>
+
+    </table>
+    <input type="submit" value="Save"  onclick="return confirm('Are you sure want to save this application?');">
+</form>
+
+<hr>
+
+{% endblock %}

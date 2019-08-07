@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>{% block title %}Company Manage{% endblock %}</h1>
+{% if g.user %}
+<a class="action" href="{{ url_for('user_center.create_company') }}">New Company</a>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+
+<div>
+    <table id="company" border="1">
+        <tr>
+            <th>ID</th>
+            <th>Company Name</th>
+            <th>Description</th>
+        </tr>
+        {% for company in companys %}
+        <tr>
+            <td>{{ company['id'] }}</td>
+            <td>{{ company['company_name'] }}</td>
+            <td>{{ company['company_desc'] }}</td>
+            <td><a class="action" href="{{ url_for('user_center.update_company', company_id=company['id']) }}">Edit</a></td>
+        </tr>
+        {% if not loop.last %}
+        {% endif %}
+        {% endfor %}
+    </table>
+</div>
+<hr>
+<a href="{{ url_for('user_center.index') }}">Back</a>
+{% endblock %}

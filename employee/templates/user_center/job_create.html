@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>{% block title %}New Job{% endblock %}</h1>
+<a href="{{ url_for('user_center.job') }}" onclick="return confirm('Are you sure?');">Back</a>
+{% endblock %}
+
+{% block content %}
+<form method="post">
+    <label for="name">Job Name</label>
+    <input name="name" id="name" value="{{ request.form['name'] }}" required>
+    <label for="superior_id">Superior Name</label>
+    <select name="superior_id" id="superior_id">
+        {% for job in jobs %}
+        <option value="{{ job.id }}">{{job.job_name}}</option>
+        {% endfor %}
+    </select>
+    <label for="desc">Description</label>
+    <textarea name="desc" id="desc">{{ request.form['desc'] }}</textarea>
+    <input type="submit" value="Save">
+</form>
+
+<hr>
+
+{% endblock %}

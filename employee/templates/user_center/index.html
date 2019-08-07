@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>{% block title %}User Center{% endblock %}</h1>
+{% if g.user %}
+<a class="action" href="{{ url_for('user_center.create_user') }}">New User</a>
+<a class="action" href="{{ url_for('user_center.job') }}">Job</a>
+<a class="action" href="{{ url_for('user_center.company') }}">Company</a>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+
+<div>
+    <table id="user" border="1">
+        <tr>
+            <th>Login Name</th>
+            <th>Really Name</th>
+            <th>Phone</th>
+            <th>Company</th>
+            <th>Job</th>
+            <th>Status</th>
+            <th>Initiation Time</th>
+            <th>Departure Time</th>
+            <th>Edit</th>
+            <th>Password</th>
+        </tr>
+        {% for user in users %}
+        <tr>
+            <td>{{ user['login_name'] }}</td>
+            <td>{{ user['really_name'] }}</td>
+            <td>{{ user['phone'] }}</td>
+            <td>{{ user['company_name'] }}</td>
+            <td>{{ user['job_name'] }}</td>
+            <td>{{ user['status_name'] }}</td>
+            <td>{{ user['initiation_time'] }}</td>
+            <td>{{ user['departure_time'] }}</td>
+            <td><a class="action" href="{{ url_for('user_center.update_user', user_id=user['id']) }}">Edit</a></td>
+            <td><a class="action" href="{{ url_for('user_center.update_user_password', user_id=user['id']) }}">Change</a></td>
+        </tr>
+        {% if not loop.last %}
+        {% endif %}
+        {% endfor %}
+    </table>
+</div>
+
+<hr>
+{% endblock %}
